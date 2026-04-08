@@ -535,28 +535,35 @@
           <div class="mock-table-sub">Prioritized by PodPulse</div>
         </div>
 
-        <table class="mock-table">
+        <table class="mock-table" style="table-layout:fixed;width:100%">
+          <colgroup>
+            <col style="width:32%">
+            <col style="width:16%">
+            <col style="width:22%">
+            <col style="width:18%">
+            <col style="width:12%">
+          </colgroup>
           <thead>
             <tr>
               <th>Incident</th>
               <th>Signal</th>
               <th>Confidence</th>
               <th>Detected</th>
-              <th>Pull request</th>
+              <th>PR</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>
-                <div style="display:flex;flex-direction:column;gap:5px;">
+                <div style="display:flex;flex-direction:column;gap:5px;align-items:flex-start;">
                   <div style="font-size:13px;font-weight:500;font-family:var(--font-mono)">crash-test <span style="font-weight:400;color:var(--text-muted);font-size:11px">DEFAULT</span></div>
                   <div style="font-size:11px;color:var(--text-dim);">k3d-bayou-local-server-0</div>
-                  <span class="badge badge-amber">CRASHLOOPBACKOFF</span>
+                  <span class="badge badge-amber" style="width:fit-content">CRASHLOOPBACKOFF</span>
                 </div>
               </td>
               <td>
                 <div style="display:flex;flex-direction:column;gap:4px;">
-                  <span class="badge badge-gray">QUEUED</span>
+                  <span class="badge badge-gray" style="width:fit-content">QUEUED</span>
                   <span style="font-size:11px;color:var(--text-dim);">Restarts 3</span>
                 </div>
               </td>
@@ -574,15 +581,15 @@
             </tr>
             <tr>
               <td>
-                <div style="display:flex;flex-direction:column;gap:5px;">
+                <div style="display:flex;flex-direction:column;gap:5px;align-items:flex-start;">
                   <div style="font-size:13px;font-weight:500;font-family:var(--font-mono)">oom-test <span style="font-weight:400;color:var(--text-muted);font-size:11px">DEFAULT</span></div>
                   <div style="font-size:11px;color:var(--text-dim);">k3d-bayou-local-server-0</div>
-                  <span class="badge badge-red">OOMKILLED</span>
+                  <span class="badge badge-red" style="width:fit-content">OOMKILLED</span>
                 </div>
               </td>
               <td>
                 <div style="display:flex;flex-direction:column;gap:4px;">
-                  <span class="badge badge-green">PR OPENED</span>
+                  <span class="badge badge-green" style="width:fit-content">PR OPENED</span>
                   <span style="font-size:11px;color:var(--text-dim);">Restarts 1</span>
                 </div>
               </td>
@@ -791,6 +798,6 @@ function submitForm() {
   document.getElementById('form-success').style.display = 'block';
 }
 </script>
- 
+
 </body>
 </html>
