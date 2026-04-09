@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Getting Started — PodPulse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;450;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f12;
+    --bg2: #13161b;
+    --bg3: #1a1e25;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.14);
+    --text: #e8eaed;
+    --muted: #8a8f9a;
+    --accent: #4e7cf6;
+    --accent2: #3a6bde;
+    --green: #22c87a;
+    --amber: #f5a623;
+    --red: #e85d5d;
+    --code-bg: #0a0c10;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'Inter', sans-serif;
+    --font-serif: 'Georgia', 'Times New Roman', serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Layout */
+  .page-wrap {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    min-height: 100vh;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    border-right: 1px solid var(--border);
+    padding: 40px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    overflow-y: auto;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 40px;
+    text-decoration: none;
+  }
+
+  .logo-icon {
+    width: 28px;
+    height: 28px;
+    background: var(--accent);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .logo-text {
+    font-family: var(--sans);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .nav-label {
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 8px;
+    margin-top: 24px;
+  }
+
+  .nav-label:first-of-type { margin-top: 0; }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px;
+    border-radius: 6px;
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 13.5px;
+    transition: all 0.15s;
+    margin-bottom: 1px;
+  }
+
+  .nav-link:hover { background: var(--bg3); color: var(--text); }
+  .nav-link.active { background: rgba(78,124,246,0.12); color: var(--accent); }
+
+  .nav-step {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 1.5px solid currentColor;
+    font-size: 10px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-family: var(--mono);
+  }
+
+  .nav-link.done .nav-step {
+    background: var(--green);
+    border-color: var(--green);
+    color: #0d0f12;
+  }
+
+  /* Main content */
+  .main {
+    padding: 64px 64px 120px;
+    max-width: 740px;
+  }
+
+  /* Hero */
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    background: rgba(78,124,246,0.1);
+    border: 1px solid rgba(78,124,246,0.2);
+    padding: 4px 10px;
+    border-radius: 100px;
+    margin-bottom: 20px;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(2.8rem, 6vw, 5rem);
+    font-weight: 400;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 1.5rem;
+  }
+  h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-sub {
+    font-size: 16px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 36px;
+  }
+
+  /* Info grid */
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 56px;
+  }
+
+  .info-cell {
+    background: var(--bg2);
+    padding: 16px 20px;
+  }
+
+  .info-label {
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    margin-bottom: 6px;
+    font-family: var(--mono);
+  }
+
+  .info-value {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  /* Overview list */
+  .overview {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 64px;
+  }
+
+  .overview-header {
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--border);
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    font-family: var(--mono);
+  }
+
+  .overview-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: background 0.12s;
+  }
+
+  .overview-item:last-child { border-bottom: none; }
+  .overview-item:hover { background: var(--bg3); color: var(--text); }
+
+  .ov-num {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border2);
+    font-size: 11px;
+    font-weight: 600;
+    font-family: var(--mono);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* Section */
+  .section {
+    margin-bottom: 72px;
+    scroll-margin-top: 32px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .step-badge {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: rgba(78,124,246,0.15);
+    border: 1px solid rgba(78,124,246,0.25);
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  h2 {
+    font-family: var(--sans);
+    font-size: 22px;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: -0.01em;
+  }
+
+  p {
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  p strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* Code */
+  .code-block {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 20px 0;
+    font-family: var(--mono);
+  }
+
+  .code-label {
+    padding: 8px 16px;
+    font-size: 11px;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .code-label .copy-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--muted);
+    font-size: 11px;
+    font-family: var(--sans);
+    transition: color 0.15s;
+    padding: 0;
+  }
+
+  .code-label .copy-btn:hover { color: var(--text); }
+
+  .code-body {
+    padding: 16px;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #c8d3e8;
+    white-space: pre;
+    overflow-x: auto;
+  }
+
+  .code-inline {
+    font-family: var(--mono);
+    font-size: 13px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 6px;
+    color: var(--accent);
+  }
+
+  /* Warning / note callout */
+  .callout {
+    border-left: 3px solid var(--amber);
+    background: rgba(245,166,35,0.06);
+    border-radius: 0 6px 6px 0;
+    padding: 14px 18px;
+    margin: 20px 0;
+    font-size: 13.5px;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  .callout strong { color: #f5c56a; }
+
+  /* Screenshot placeholder */
+  .screenshot {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 24px 0;
+  }
+
+  .screenshot img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .screenshot-caption {
+    padding: 10px 16px;
+    font-size: 12px;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    font-style: italic;
+  }
+
+  /* Permissions table */
+  .perm-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 13.5px;
+  }
+
+  .perm-table thead tr {
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border2);
+  }
+
+  .perm-table th {
+    padding: 10px 16px;
+    text-align: left;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+  }
+
+  .perm-table td {
+    padding: 11px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+
+  .perm-table tbody tr:last-child td { border-bottom: none; }
+
+  .perm-resource {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--text);
+  }
+
+  .perm-verb {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--green);
+  }
+
+  .perm-none {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .perm-purpose {
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  /* Pipeline flow */
+  .pipeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 24px 0;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .pipeline-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+
+  .pipeline-step:last-child { border-bottom: none; }
+
+  .pipe-arrow {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    flex-shrink: 0;
+    margin-top: 1px;
+    width: 20px;
+  }
+
+  .pipe-label {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text);
+    min-width: 140px;
+    flex-shrink: 0;
+  }
+
+  .pipe-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* Troubleshooting */
+  .trouble-item {
+    margin-bottom: 28px;
+  }
+
+  .trouble-q {
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .trouble-q::before {
+    content: '?';
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--amber);
+    font-family: var(--mono);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 80px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 24px;
+  }
+
+  .footer-links a {
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .footer-links a:hover { color: var(--text); }
+
+  /* Progress bar at top */
+  .progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    background: var(--accent);
+    z-index: 100;
+    transition: width 0.1s;
+  }
+
+  /* Responsive */
+  @media (max-width: 800px) {
+    .page-wrap { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .main { padding: 40px 24px 80px; }
+    h1 { font-size: 30px; }
+    .info-grid { grid-template-columns: 1fr; }
+  }
+
+  h3 {
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    margin: 28px 0 8px;
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress"></div>
+
+<div class="page-wrap">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <a href="https://podpulse.io" class="logo">
+      <img src="/img/logo.svg" alt="PodPulse" width="28" height="28" style="display:block;flex-shrink:0;">
+      <span class="logo-text">PodPulse</span>
+    </a>
+
+    <span class="nav-label">Getting started</span>
+
+    <a href="#step-1" class="nav-link active">
+      <span class="nav-step">1</span>
+      Create your account
+    </a>
+    <a href="#step-2" class="nav-link">
+      <span class="nav-step">2</span>
+      Connect GitHub
+    </a>
+    <a href="#step-3" class="nav-link">
+      <span class="nav-step">3</span>
+      Copy your API key
+    </a>
+    <a href="#step-4" class="nav-link">
+      <span class="nav-step">4</span>
+      Deploy the agent
+    </a>
+    <a href="#step-5" class="nav-link">
+      <span class="nav-step">5</span>
+      Watch it work
+    </a>
+
+    <span class="nav-label">Reference</span>
+    <a href="#troubleshooting" class="nav-link">Troubleshooting</a>
+    <a href="https://github.com/PodPulse/podpulse-agent" class="nav-link">Agent repo ↗</a>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+
+    <div class="hero-eyebrow">Getting Started Guide</div>
+
+    <h1>From invite link to your <em>first automated PR.</em></h1>
+    <p class="hero-sub">PodPulse detects Kubernetes incidents, analyzes root causes with AI, and opens pull requests with proposed fixes — automatically.</p>
+
+    <div class="info-grid">
+      <div class="info-cell">
+        <div class="info-label">Time to complete</div>
+        <div class="info-value">~15 minutes</div>
+      </div>
+      <div class="info-cell">
+        <div class="info-label">Access required</div>
+        <div class="info-value">Read-only on cluster</div>
+      </div>
+      <div class="info-cell">
+        <div class="info-label">Prerequisites</div>
+        <div class="info-value">Kubernetes + GitHub repo</div>
+      </div>
+    </div>
+
+    <div class="overview">
+      <div class="overview-header">What you will do</div>
+      <a href="#step-1" class="overview-item"><span class="ov-num">1</span> Create your account from your invitation link</a>
+      <a href="#step-2" class="overview-item"><span class="ov-num">2</span> Connect your GitHub repository</a>
+      <a href="#step-3" class="overview-item"><span class="ov-num">3</span> Copy your API key</a>
+      <a href="#step-4" class="overview-item"><span class="ov-num">4</span> Deploy the PodPulse agent in your Kubernetes cluster</a>
+      <a href="#step-5" class="overview-item"><span class="ov-num">5</span> Watch incidents get detected and pull requests get opened</a>
+    </div>
+
+    <!-- Step 1 -->
+    <section class="section" id="step-1">
+      <div class="section-header">
+        <div class="step-badge">1</div>
+        <h2>Create your account</h2>
+      </div>
+
+      <p>You received an invitation link. Open it in your browser:</p>
+
+      <div class="code-block">
+        <div class="code-label">
+          <span>Invitation URL</span>
+          <button class="copy-btn" onclick="copyCode(this, 'https://app.podpulse.io/register?token=&lt;your-invitation-token&gt;')">Copy</button>
+        </div>
+        <div class="code-body">https://app.podpulse.io/register?token=&lt;your-invitation-token&gt;</div>
+      </div>
+
+      <p>The link pre-validates your invitation and takes you directly to the account creation form. Enter your email address and choose a password (minimum 8 characters). Once you click <strong>Create account</strong>, you are automatically signed in and redirected to your dashboard.</p>
+
+      <div class="screenshot">
+        <img src="./screenshots/step-1-register.png" alt="Account creation form — pre-filled with your invitation token" onerror="this.parentElement.style.display='none'">
+        <div class="screenshot-caption">Account creation form — pre-filled with your invitation token.</div>
+      </div>
+
+      <p>Your personal dashboard is empty at this point — incidents will appear here once the agent is running.</p>
+    </section>
+
+    <!-- Step 2 -->
+    <section class="section" id="step-2">
+      <div class="section-header">
+        <div class="step-badge">2</div>
+        <h2>Connect your GitHub repository</h2>
+      </div>
+
+      <p>Navigate to <strong>Settings</strong> using the profile icon in the top-right corner. In the <strong>GitHub Integration</strong> section, click <strong>Connect GitHub App</strong>.</p>
+
+      <div class="screenshot">
+        <img src="./screenshots/step-2-settings-before.png" alt="Settings before GitHub connection" onerror="this.parentElement.style.display='none'">
+        <div class="screenshot-caption">Settings before GitHub connection — click Connect GitHub App to proceed.</div>
+      </div>
+
+      <p>GitHub will ask you to:</p>
+
+      <div class="pipeline">
+        <div class="pipeline-step">
+          <div class="pipe-arrow">1.</div>
+          <div class="pipe-desc">Select the organization or personal account where your Kubernetes manifests live</div>
+        </div>
+        <div class="pipeline-step">
+          <div class="pipe-arrow">2.</div>
+          <div class="pipe-desc">Choose the repository PodPulse should open pull requests against</div>
+        </div>
+        <div class="pipeline-step">
+          <div class="pipe-arrow">3.</div>
+          <div class="pipe-desc">Confirm the installation — GitHub redirects you back to Settings automatically</div>
+        </div>
+      </div>
+
+      <p>After the redirect, Settings shows your connected repository with a green status indicator.</p>
+
+      <div class="screenshot">
+        <img src="./screenshots/step-2-settings-after.png" alt="Settings after GitHub connection" onerror="this.parentElement.style.display='none'">
+        <div class="screenshot-caption">Settings after GitHub connection — repository shown as connected, API key active.</div>
+      </div>
+    </section>
+
+    <!-- Step 3 -->
+    <section class="section" id="step-3">
+      <div class="section-header">
+        <div class="step-badge">3</div>
+        <h2>Copy your API key</h2>
+      </div>
+
+      <p>When GitHub redirects you back to Settings, a green banner displays your API key in full — <strong>this is the only time it will ever be shown</strong>. Copy it immediately and store it securely (password manager or secrets vault).</p>
+
+      <div class="callout">
+        <strong>Your API key is shown exactly once.</strong> If you lose it, go to Settings → API Key → Regenerate. The old key is immediately revoked and your agent will stop sending data until reconfigured.
+      </div>
+
+      <p>Your API key looks like this:</p>
+
+      <div class="code-block">
+        <div class="code-label">
+          <span>API key format</span>
+          <button class="copy-btn" onclick="copyCode(this, 'pp_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')">Copy</button>
+        </div>
+        <div class="code-body">pp_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</div>
+      </div>
+    </section>
+
+    <!-- Step 4 -->
+    <section class="section" id="step-4">
+      <div class="section-header">
+        <div class="step-badge">4</div>
+        <h2>Deploy the PodPulse agent in your cluster</h2>
+      </div>
+
+      <p>The PodPulse agent is an open-source Go binary that runs inside your cluster. It requires <strong>read-only</strong> Kubernetes permissions only — it never modifies any cluster resource. Install it via Helm in two commands:</p>
+
+      <h3>Add the PodPulse Helm repository</h3>
+
+      <div class="code-block">
+        <div class="code-label">
+          <span>Shell</span>
+          <button class="copy-btn" onclick="copyCode(this, 'helm repo add podpulse https://charts.podpulse.io')">Copy</button>
+        </div>
+        <div class="code-body">helm repo add podpulse https://charts.podpulse.io</div>
+      </div>
+
+      <h3>Install the agent</h3>
+
+      <div class="code-block">
+        <div class="code-label">
+          <span>Shell</span>
+          <button class="copy-btn" onclick="copyCode(this, 'helm install podpulse-agent podpulse/podpulse-agent \\\n  --set config.apiKey=pp_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx \\\n  --namespace podpulse --create-namespace')">Copy</button>
+        </div>
+        <div class="code-body">helm install podpulse-agent podpulse/podpulse-agent \
+  --set config.apiKey=pp_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx \
+  --namespace podpulse --create-namespace</div>
+      </div>
+
+      <h3>Permissions granted to the agent</h3>
+
+      <table class="perm-table">
+        <thead>
+          <tr>
+            <th>Resource</th>
+            <th>Permissions</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="perm-resource">pods, pods/log</span></td>
+            <td><span class="perm-verb">get, list, watch</span></td>
+            <td class="perm-purpose">Detect incidents, collect logs</td>
+          </tr>
+          <tr>
+            <td><span class="perm-resource">events</span></td>
+            <td><span class="perm-verb">get, list, watch</span></td>
+            <td class="perm-purpose">Capture Kubernetes events</td>
+          </tr>
+          <tr>
+            <td><span class="perm-resource">nodes</span></td>
+            <td><span class="perm-verb">get, list, watch</span></td>
+            <td class="perm-purpose">Identify affected node</td>
+          </tr>
+          <tr>
+            <td><span class="perm-resource">deployments, replicasets</span></td>
+            <td><span class="perm-verb">get, list, watch</span></td>
+            <td class="perm-purpose">Resolve workload context</td>
+          </tr>
+          <tr>
+            <td><span class="perm-resource">secrets</span></td>
+            <td><span class="perm-none">none</span></td>
+            <td class="perm-purpose">Never accessed</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>The agent communicates outbound only — to the PodPulse backend via gRPC. No inbound ports are opened. No Kubernetes Secrets are ever read or transmitted.</p>
+
+      <h3>Verify the agent is running</h3>
+
+      <div class="code-block">
+        <div class="code-label">
+          <span>Shell</span>
+          <button class="copy-btn" onclick="copyCode(this, 'kubectl get pods -n podpulse')">Copy</button>
+        </div>
+        <div class="code-body">kubectl get pods -n podpulse</div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-label"><span>Expected output</span></div>
+        <div class="code-body">podpulse-agent-xxxx   1/1   Running   0   &lt;age&gt;</div>
+      </div>
+    </section>
+
+    <!-- Step 5 -->
+    <section class="section" id="step-5">
+      <div class="section-header">
+        <div class="step-badge">5</div>
+        <h2>Watch incidents get detected and pull requests get opened</h2>
+      </div>
+
+      <p>Once the agent is running, it immediately starts monitoring your cluster. When a pod fails — OOMKilled, CrashLoopBackOff, or other supported patterns — the full pipeline runs automatically within seconds:</p>
+
+      <div class="pipeline">
+        <div class="pipeline-step">
+          <div class="pipe-arrow">→</div>
+          <div class="pipe-label">Agent detects</div>
+          <div class="pipe-desc">Pod lifecycle event observed in real time</div>
+        </div>
+        <div class="pipeline-step">
+          <div class="pipe-arrow">→</div>
+          <div class="pipe-label">Context built</div>
+          <div class="pipe-desc">Logs, events, and pod state assembled — no secrets included</div>
+        </div>
+        <div class="pipeline-step">
+          <div class="pipe-arrow">→</div>
+          <div class="pipe-label">AI diagnoses</div>
+          <div class="pipe-desc">Claude analyzes root cause and generates a proposed fix with a confidence score</div>
+        </div>
+        <div class="pipeline-step">
+          <div class="pipe-arrow">→</div>
+          <div class="pipe-label">PR opened</div>
+          <div class="pipe-desc">If confidence exceeds the threshold, a pull request is opened on your repository</div>
+        </div>
+        <div class="pipeline-step">
+          <div class="pipe-arrow">→</div>
+          <div class="pipe-label">Dashboard updated</div>
+          <div class="pipe-desc">Incident appears in your dashboard in real time via live push</div>
+        </div>
+      </div>
+
+      <div class="screenshot">
+        <img src="./screenshots/step-5-dashboard.png" alt="Live diagnostics queue" onerror="this.parentElement.style.display='none'">
+        <div class="screenshot-caption">Live diagnostics queue — incidents detected, diagnosed, and promoted to pull requests in real time.</div>
+      </div>
+
+      <div class="screenshot">
+        <img src="./screenshots/step-5-incident-detail.png" alt="AI diagnostic — incident detail" onerror="this.parentElement.style.display='none'">
+        <div class="screenshot-caption">Structured AI diagnostic with detection summary, root cause hypothesis, and proposed fix.</div>
+      </div>
+
+      <div class="screenshot">
+        <img src="./screenshots/step-5-github-pr.png" alt="Automated pull request on GitHub" onerror="this.parentElement.style.display='none'">
+        <div class="screenshot-caption">Pull request opened automatically by podpulse[bot] — review and merge when ready.</div>
+      </div>
+
+      <div class="callout">
+        <strong>PodPulse never applies changes directly to your cluster.</strong> Every fix is a pull request. Your team decides what gets merged.
+      </div>
+    </section>
+
+    <!-- Troubleshooting -->
+    <section class="section" id="troubleshooting">
+      <div class="section-header">
+        <div class="step-badge" style="background: rgba(245,166,35,0.12); border-color: rgba(245,166,35,0.25); color: var(--amber);">?</div>
+        <h2>Troubleshooting</h2>
+      </div>
+
+      <div class="trouble-item">
+        <div class="trouble-q">Agent pod is not Running</div>
+        <p>Check the API key is correctly set:</p>
+        <div class="code-block">
+          <div class="code-body">kubectl describe pod -n podpulse</div>
+        </div>
+        <p>Look for authentication errors in the logs:</p>
+        <div class="code-block">
+          <div class="code-body">kubectl logs -n podpulse -l app=podpulse-agent</div>
+        </div>
+      </div>
+
+      <div class="trouble-item">
+        <div class="trouble-q">No incidents appear in the dashboard</div>
+        <p>The agent only reports incidents matching supported patterns (<span class="code-inline">OOMKilled</span>, <span class="code-inline">CrashLoopBackOff</span>). Verify your pods are actually failing and that the agent pod is in <span class="code-inline">Running</span> state.</p>
+      </div>
+
+      <div class="trouble-item">
+        <div class="trouble-q">Pull requests are not opened</div>
+        <p>Check the GitHub integration in Settings. The GitHub App must be connected before any PR can be created. Low-confidence detections surface as insights only — no PR is opened below the threshold.</p>
+      </div>
+
+      <div class="trouble-item">
+        <div class="trouble-q">Need to regenerate your API key</div>
+        <p>Go to <strong>Settings → API Key → Regenerate</strong>. Your old key is immediately revoked. Update the agent:</p>
+        <div class="code-block">
+          <div class="code-body">helm upgrade podpulse-agent podpulse/podpulse-agent \
+  --set config.apiKey=pp_live_new_key \
+  -n podpulse</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      <div class="footer-links">
+        <a href="https://podpulse.io">podpulse.io</a>
+        <a href="https://app.podpulse.io">app.podpulse.io</a>
+        <a href="https://github.com/PodPulse/podpulse-agent">GitHub ↗</a>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// Progress bar
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('progress').style.width = pct + '%';
+});
+
+// Active sidebar link
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-link[href^="#"]');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('active'));
+      const active = document.querySelector(`.nav-link[href="#${e.target.id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -60% 0px' });
+
+sections.forEach(s => observer.observe(s));
